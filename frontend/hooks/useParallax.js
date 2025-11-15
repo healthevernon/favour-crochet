@@ -9,14 +9,28 @@ export function useParallax(speed = 0.5) {
   })
   
   const smoothProgress = useSpring(scrollYProgress, {
-    stiffness: 100,
-    damping: 30,
-    restDelta: 0.001
+    stiffness: 400,
+    damping: 60,
+    restDelta: 0.001,
+    mass: 0.3
   })
   
   const y = useTransform(smoothProgress, [0, 1], ["0%", `${speed * 100}%`])
   
   return { ref, y }
+}
+
+export function useZoomParallax() {
+  const ref = useRef(null)
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start start", "end start"]
+  })
+  
+  const scale = useTransform(scrollYProgress, [0, 1], [1, 1.5])
+  const opacity = useTransform(scrollYProgress, [0, 0.8], [1, 0])
+  
+  return { ref, scale, opacity }
 }
 
 export function useMouseParallax(strength = 20) {

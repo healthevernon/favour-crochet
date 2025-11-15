@@ -47,8 +47,7 @@ export default function Header() {
 
   const navigation = [
     { name: 'Home', href: '/', current: router.pathname === '/' },
-    { name: 'Products', href: '/products', current: router.pathname === '/products' },
-    { name: 'Categories', href: '/categories', current: router.pathname === '/categories' },
+    { name: 'Collection', href: '/products', current: router.pathname === '/products' },
     { name: 'About', href: '/about', current: router.pathname === '/about' },
     { name: 'Contact', href: '/contact', current: router.pathname === '/contact' },
   ]
@@ -62,27 +61,29 @@ export default function Header() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 lg:h-20">
           
-          {/* Logo */}
-          <Link href="/" className="flex items-center space-x-3 group">
-            <div className="relative">
-              <div className="w-10 h-10 lg:w-12 lg:h-12 rounded-full bg-hero-gradient flex items-center justify-center transform group-hover:scale-110 transition-transform duration-200">
-                <span className="text-white font-bold text-xl lg:text-2xl">F</span>
+          {/* Logo - moved more to the left */}
+          <div className="flex items-center justify-start flex-1 max-w-xs">
+            <Link href="/" className="flex items-center space-x-3 group">
+              <div className="relative">
+                <div className="w-12 h-12 lg:w-14 lg:h-14 rounded-full bg-gradient-to-r from-red-600 via-yellow-500 to-green-600 flex items-center justify-center transform group-hover:scale-110 transition-transform duration-200">
+                  <span className="text-white font-black text-xl lg:text-2xl drop-shadow-lg">FC</span>
+                </div>
+                <div className="absolute -inset-1 bg-gradient-to-r from-red-600 via-yellow-500 to-green-600 rounded-full blur opacity-30 group-hover:opacity-60 transition-opacity"></div>
               </div>
-              <div className="absolute -inset-1 bg-hero-gradient rounded-full blur opacity-30 group-hover:opacity-50 transition-opacity"></div>
-            </div>
-            <div className="hidden sm:block">
-              <h1 className={`font-display font-bold text-xl lg:text-2xl ${
-                isScrolled ? 'text-gray-900' : 'text-white text-shadow'
-              }`}>
-                Favour Crochet
-              </h1>
-              <p className={`text-sm ${
-                isScrolled ? 'text-primary-600' : 'text-primary-100'
-              }`}>
-                African Style Fashion
-              </p>
-            </div>
-          </Link>
+              <div className="hidden sm:block">
+                <h1 className={`font-black text-xl lg:text-2xl tracking-tight ${
+                  isScrolled ? 'text-gray-900' : 'text-white drop-shadow-lg'
+                }`}>
+                  FAVOUR CROCHET
+                </h1>
+                <p className={`text-xs font-medium tracking-wider ${
+                  isScrolled ? 'text-gray-600' : 'text-white/80'
+                }`}>
+                  SURINAMESE HERITAGE
+                </p>
+              </div>
+            </Link>
+          </div>
 
           {/* Desktop Navigation */}
           <nav className="hidden lg:flex items-center space-x-8">

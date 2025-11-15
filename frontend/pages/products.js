@@ -1,272 +1,266 @@
-import React, { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { motion } from 'framer-motion'
 import Layout from '../components/Layout'
-import { productsAPI, categoriesAPI } from '../lib/api'
 import useStore from '../store/useStore'
-import Link from 'next/link'
-import Image from 'next/image'
-import ProductImage from '../components/ProductImage'
-import { 
-  FunnelIcon, 
-  MagnifyingGlassIcon,
-  HeartIcon,
-  ShoppingBagIcon,
-  StarIcon
-} from '@heroicons/react/24/outline'
-import { HeartIcon as HeartSolidIcon } from '@heroicons/react/24/solid'
-import { toast } from 'react-hot-toast'
 
-export default function ProductsPage() {
-  const [products, setProducts] = useState([])
-  const [categories, setCategories] = useState([])
-  const [loading, setLoading] = useState(true)
-  const [searchQuery, setSearchQuery] = useState('')
-  const [selectedCategory, setSelectedCategory] = useState('')
-  
-  const { addToCart, addToWishlist, removeFromWishlist, isInWishlist } = useStore()
+export default function Products() {
+  const { addToCart, showNotification } = useStore()
+  const [selectedCategory, setSelectedCategory] = useState('all')
+  const [sortBy, setSortBy] = useState('featured')
 
-  useEffect(() => {
-    loadData()
-  }, [])
-
-  const loadData = async () => {
-    try {
-      setLoading(true)
-      const [productsRes, categoriesRes] = await Promise.all([
-        productsAPI.getAll(),
-        categoriesAPI.getAll()
-      ])
-      
-      setProducts(productsRes.data.results || productsRes.data)
-      setCategories(categoriesRes.data.results || categoriesRes.data)
-    } catch (error) {
-      console.error('Error loading data:', error)
-      toast.error('Failed to load products')
-    } finally {
-      setLoading(false)
+  // Sample products - replace with real data
+  const products = [
+    {
+      id: 1,
+      name: "Heritage Crochet Dress",
+      price: 299,
+      image: "/images/heritage-yellow-outfit.jpg",
+      category: "dresses",
+      featured: true,
+      colors: ["Yellow", "Red", "Green"],
+      description: "Handcrafted traditional Surinamese crochet dress with modern fit"
+    },
+    {
+      id: 2,
+      name: "Suriname Flag Shirt",
+      price: 149,
+      image: "/images/featured-suriname-shirt.jpg", 
+      category: "tops",
+      featured: true,
+      colors: ["Red", "Yellow", "Green"],
+      description: "Premium crochet shirt featuring Suriname flag colors"
+    },
+    {
+      id: 3,
+      name: "Traditional Crochet Top",
+      price: 199,
+      image: "/images/hero-crochet-dress.jpg",
+      category: "tops", 
+      featured: false,
+      colors: ["Cream", "White"],
+      description: "Elegant handwoven crochet top with traditional patterns"
+    },
+    {
+      id: 4,
+      name: "Cultural Pattern Dress",
+      price: 349,
+      image: "/images/heritage-yellow-outfit.jpg",
+      category: "dresses",
+      featured: true,
+      colors: ["Gold", "Yellow"],
+      description: "Statement dress with authentic Surinamese cultural motifs"
+    },
+    {
+      id: 5,
+      name: "Artisan Crochet Set",
+      price: 449,
+      image: "/images/featured-suriname-shirt.jpg",
+      category: "sets",
+      featured: false,
+      colors: ["Multi"],
+      description: "Complete crochet set with top and matching accessories"
+    },
+    {
+      id: 6,
+      name: "Festival Collection Piece",
+      price: 259,
+      image: "/images/hero-crochet-dress.jpg",
+      category: "dresses",
+      featured: true,
+      colors: ["White", "Cream"],
+      description: "Perfect for special occasions and cultural celebrations"
     }
-  }
+  ]
+
+  const categories = [
+    { id: 'all', name: 'All Products' },
+    { id: 'dresses', name: 'Dresses' },
+    { id: 'tops', name: 'Tops' },
+    { id: 'sets', name: 'Sets' },
+  ]
+
+  const filteredProducts = products.filter(product => 
+    selectedCategory === 'all' || product.category === selectedCategory
+  )
 
   const handleAddToCart = (product) => {
-    addToCart(product, 1)
-    toast.success(`${product.title} added to cart!`)
-  }
-
-  const handleWishlistToggle = (product) => {
-    if (isInWishlist(product.id)) {
-      removeFromWishlist(product.id)
-      toast.success('Removed from wishlist')
-    } else {
-      addToWishlist(product)
-      toast.success('Added to wishlist')
-    }
-  }
-
-  const formatPrice = (price) => {
-    return new Intl.NumberFormat('en-NG', {
-      style: 'currency',
-      currency: 'NGN'
-    }).format(price)
-  }
-
-  const filteredProducts = products.filter(product => {
-    const matchesSearch = product.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         product.description.toLowerCase().includes(searchQuery.toLowerCase())
-    const matchesCategory = !selectedCategory || product.category === selectedCategory
-    
-    return matchesSearch && matchesCategory
-  })
-
-  if (loading) {
-    return (
-      <Layout title="Products - Favour Crochet">
-        <div className="min-h-screen flex items-center justify-center">
-          <div className="text-center">
-            <div className="w-16 h-16 border-4 border-primary-200 border-t-primary-600 rounded-full animate-spin mb-4 mx-auto"></div>
-            <p className="text-gray-600">Loading products...</p>
-          </div>
-        </div>
-      </Layout>
-    )
+    addToCart({
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      image: product.image,
+      quantity: 1
+    })
+    showNotification(`${product.name} added to cart!`)
   }
 
   return (
-    <Layout title="African Fashion Products - Favour Crochet">
-      <div className="min-h-screen bg-gray-50 pt-20">
-        
+    <Layout title="Collection - Favour Crochet">
+      <div className="pt-20">
         {/* Hero Section */}
-        <div className="bg-hero-gradient py-16">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h1 className="text-4xl md:text-6xl font-bold text-white font-display mb-6 text-shadow-lg">
-              Our Collection
-            </h1>
-            <p className="text-xl text-white/90 max-w-2xl mx-auto">
-              Discover authentic African fashion and handmade crochet designs
-            </p>
+        <section className="relative py-20 bg-gradient-to-br from-red-600 via-yellow-400 to-green-600">
+          <div className="absolute inset-0 bg-black/20" />
+          <div className="relative max-w-4xl mx-auto px-4 text-center text-white">
+            <motion.h1 
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="text-5xl md:text-7xl font-black mb-6"
+            >
+              OUR COLLECTION
+            </motion.h1>
+            <motion.p 
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+              className="text-xl md:text-2xl font-light"
+            >
+              Handcrafted Surinamese Crochet Fashion
+            </motion.p>
           </div>
-        </div>
+        </section>
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          
-          {/* Filters */}
-          <div className="bg-white rounded-2xl shadow-lg p-6 mb-8">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        {/* Filters */}
+        <section className="py-8 bg-white border-b">
+          <div className="max-w-7xl mx-auto px-4">
+            <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
               
-              {/* Search */}
-              <div className="relative">
-                <MagnifyingGlassIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
-                <input
-                  type="text"
-                  placeholder="Search products..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
-                />
-              </div>
-
               {/* Category Filter */}
-              <div className="relative">
-                <FunnelIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
-                <select
-                  value={selectedCategory}
-                  onChange={(e) => setSelectedCategory(e.target.value)}
-                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 appearance-none"
-                >
-                  <option value="">All Categories</option>
-                  {categories.map((category) => (
-                    <option key={category.id} value={category.id}>
-                      {category.name}
-                    </option>
-                  ))}
-                </select>
+              <div className="flex flex-wrap gap-2">
+                {categories.map((category) => (
+                  <button
+                    key={category.id}
+                    onClick={() => setSelectedCategory(category.id)}
+                    className={`px-6 py-2 rounded-full font-medium transition-all ${
+                      selectedCategory === category.id
+                        ? 'bg-gradient-to-r from-red-600 to-yellow-500 text-white'
+                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                    }`}
+                  >
+                    {category.name}
+                  </button>
+                ))}
               </div>
 
-              {/* Results Count */}
-              <div className="flex items-center justify-center md:justify-end">
-                <span className="text-gray-600">
-                  {filteredProducts.length} product{filteredProducts.length !== 1 ? 's' : ''} found
-                </span>
-              </div>
+              {/* Sort By */}
+              <select 
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value)}
+                className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
+              >
+                <option value="featured">Featured</option>
+                <option value="price-low">Price: Low to High</option>
+                <option value="price-high">Price: High to Low</option>
+                <option value="newest">Newest First</option>
+              </select>
             </div>
           </div>
+        </section>
 
-          {/* Products Grid */}
-          {filteredProducts.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+        {/* Products Grid */}
+        <section className="py-20 bg-gray-50">
+          <div className="max-w-7xl mx-auto px-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {filteredProducts.map((product, index) => (
                 <motion.div
                   key={product.id}
                   initial={{ opacity: 0, y: 30 }}
-                  animate={{ opacity: 1, y: 0 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
                   transition={{ delay: index * 0.1 }}
-                  className="product-card group bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300"
+                  className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all group"
                 >
+                  {/* Product Image */}
                   <div className="relative aspect-square overflow-hidden">
-                    <ProductImage
-                      src={product.primary_image ? `${process.env.NEXT_PUBLIC_API_URL}${product.primary_image}` : `/images/products/${product.title.toLowerCase().replace(/\s+/g, '-')}.jpg`}
-                      alt={product.title}
-                      fill
-                      className="group-hover:scale-110 transition-transform duration-500"
+                    <div 
+                      className="w-full h-full bg-cover bg-center group-hover:scale-105 transition-transform duration-500"
+                      style={{ backgroundImage: `url("${product.image}")` }}
                     />
-                    
-                    {/* Overlay Actions */}
-                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center space-x-3">
-                      <button
-                        onClick={() => handleWishlistToggle(product)}
-                        className="w-12 h-12 bg-white rounded-full flex items-center justify-center text-gray-700 hover:text-red-500 transition-colors transform hover:scale-110"
-                      >
-                        {isInWishlist(product.id) ? (
-                          <HeartSolidIcon className="w-6 h-6 text-red-500" />
-                        ) : (
-                          <HeartIcon className="w-6 h-6" />
-                        )}
-                      </button>
-                      <button
+                    {product.featured && (
+                      <div className="absolute top-4 left-4 bg-gradient-to-r from-red-600 to-yellow-500 text-white px-3 py-1 rounded-full text-sm font-semibold">
+                        Featured
+                      </div>
+                    )}
+                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300 flex items-center justify-center">
+                      <motion.button
                         onClick={() => handleAddToCart(product)}
-                        className="w-12 h-12 bg-white rounded-full flex items-center justify-center text-gray-700 hover:text-primary-600 transition-colors transform hover:scale-110"
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        className="opacity-0 group-hover:opacity-100 bg-white text-black px-6 py-3 rounded-full font-semibold transition-all transform translate-y-4 group-hover:translate-y-0"
                       >
-                        <ShoppingBagIcon className="w-6 h-6" />
-                      </button>
-                    </div>
-
-                    {/* Badges */}
-                    <div className="absolute top-3 left-3 space-y-2">
-                      {product.is_featured && (
-                        <div className="bg-african-gold text-white px-3 py-1 rounded-full text-xs font-medium">
-                          Featured
-                        </div>
-                      )}
-                      {product.is_custom_order && (
-                        <div className="bg-primary-600 text-white px-3 py-1 rounded-full text-xs font-medium">
-                          Custom Made
-                        </div>
-                      )}
+                        Add to Cart
+                      </motion.button>
                     </div>
                   </div>
-                  
+
+                  {/* Product Info */}
                   <div className="p-6">
-                    <Link href={`/products/${product.id}`}>
-                      <h3 className="font-semibold text-gray-900 mb-2 line-clamp-2 group-hover:text-primary-600 transition-colors">
-                        {product.title}
-                      </h3>
-                    </Link>
-                    <p className="text-gray-600 text-sm mb-3 line-clamp-2">
-                      {product.african_style_display || product.description}
-                    </p>
-                    <div className="flex items-center justify-between mb-4">
-                      <span className="text-2xl font-bold text-primary-600 font-display">
-                        {formatPrice(product.price)}
-                      </span>
-                      <div className="flex items-center space-x-1">
-                        {[...Array(5)].map((_, i) => (
-                          <StarIcon key={i} className="w-4 h-4 text-yellow-400 fill-current" />
+                    <h3 className="text-xl font-bold text-gray-900 mb-2">{product.name}</h3>
+                    <p className="text-gray-600 text-sm mb-4">{product.description}</p>
+                    
+                    {/* Colors */}
+                    <div className="flex items-center space-x-2 mb-4">
+                      <span className="text-sm text-gray-500">Colors:</span>
+                      <div className="flex space-x-1">
+                        {product.colors.map((color, i) => (
+                          <span key={i} className="text-xs bg-gray-100 px-2 py-1 rounded">
+                            {color}
+                          </span>
                         ))}
                       </div>
                     </div>
-                    
-                    {/* Stock Status */}
-                    <div className="text-xs text-gray-500 mb-4">
-                      {product.is_custom_order ? (
-                        <span className="text-blue-600">Made to order</span>
-                      ) : product.stock_quantity > 0 ? (
-                        <span className="text-green-600">{product.stock_quantity} in stock</span>
-                      ) : (
-                        <span className="text-red-600">Out of stock</span>
-                      )}
-                    </div>
 
-                    <button
-                      onClick={() => handleAddToCart(product)}
-                      className="w-full btn-primary text-sm py-3"
-                      disabled={!product.is_in_stock}
-                    >
-                      {product.is_custom_order ? 'Order Now' : 'Add to Cart'}
-                    </button>
+                    <div className="flex items-center justify-between">
+                      <span className="text-2xl font-bold text-gray-900">
+                        ${product.price}
+                      </span>
+                      <motion.button
+                        onClick={() => handleAddToCart(product)}
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        className="bg-gradient-to-r from-red-600 to-yellow-500 text-white px-4 py-2 rounded-full font-medium hover:from-red-700 hover:to-yellow-600 transition-all"
+                      >
+                        Add to Cart
+                      </motion.button>
+                    </div>
                   </div>
                 </motion.div>
               ))}
             </div>
-          ) : (
-            <div className="text-center py-16">
-              <div className="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mb-6 mx-auto">
-                <MagnifyingGlassIcon className="w-12 h-12 text-gray-400" />
-              </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">No products found</h3>
-              <p className="text-gray-600 mb-6">
-                Try adjusting your search or filter criteria
-              </p>
-              <button
-                onClick={() => {
-                  setSearchQuery('')
-                  setSelectedCategory('')
-                }}
-                className="btn-primary"
-              >
-                Clear Filters
-              </button>
-            </div>
-          )}
-        </div>
+          </div>
+        </section>
+
+        {/* CTA Section */}
+        <section className="py-20 bg-gray-900 text-white">
+          <div className="max-w-4xl mx-auto px-4 text-center">
+            <motion.h2 
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-4xl font-bold mb-6"
+            >
+              Custom Orders Available
+            </motion.h2>
+            <motion.p 
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2 }}
+              className="text-xl mb-8 text-gray-300"
+            >
+              Looking for something unique? Our artisans can create custom pieces tailored to your vision.
+            </motion.p>
+            <motion.button
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.4 }}
+              whileHover={{ scale: 1.05 }}
+              className="bg-gradient-to-r from-red-600 to-yellow-500 text-white px-8 py-4 rounded-full font-bold text-lg hover:from-red-700 hover:to-yellow-600 transition-all"
+            >
+              Request Custom Order
+            </motion.button>
+          </div>
+        </section>
       </div>
     </Layout>
   )

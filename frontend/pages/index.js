@@ -71,54 +71,90 @@ function HomePage() {
   return (
     <div ref={containerRef}>
       <Layout title="Suriname Pangi - Premium Fashion & Style">
-        {/* Hero Section with Advanced Parallax */}
+        {/* Premium Hero Banner with Cultural Elements */}
         <motion.section 
           ref={heroRef}
           className="relative h-screen flex items-center justify-center overflow-hidden bg-black"
           style={{ y: heroY, opacity: heroOpacity }}
         >
-          {/* Layered Background with Multiple Parallax Elements */}
+          {/* Cultural Background with Parallax */}
           <motion.div 
             className="absolute inset-0 z-0"
             style={{ scale: heroScale, y: backgroundY }}
           >
-            {/* Base gradient */}
-            <div className="w-full h-full bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900">
+            {/* Deep black base with cultural overlays */}
+            <div className="w-full h-full bg-gradient-to-br from-gray-900 via-black to-amber-900">
               
-              {/* Floating geometric shapes */}
+              {/* African/Surinamese Pattern Overlay */}
+              <div className="absolute inset-0 opacity-10">
+                <div className="w-full h-full" style={{
+                  backgroundImage: `
+                    radial-gradient(circle at 25% 25%, #DAA520 2px, transparent 2px),
+                    radial-gradient(circle at 75% 75%, #B8860B 1.5px, transparent 1.5px),
+                    linear-gradient(45deg, transparent 24%, rgba(218, 165, 32, 0.1) 25%, rgba(218, 165, 32, 0.1) 26%, transparent 27%, transparent 74%, rgba(218, 165, 32, 0.1) 75%, rgba(218, 165, 32, 0.1) 76%, transparent 77%)
+                  `,
+                  backgroundSize: '50px 50px, 30px 30px, 40px 40px'
+                }} />
+              </div>
+              
+              {/* Crochet Texture Patterns */}
+              <div className="absolute inset-0 opacity-20">
+                {[...Array(8)].map((_, i) => (
+                  <motion.div
+                    key={i}
+                    className="absolute"
+                    style={{
+                      left: `${15 + (i % 3) * 30}%`,
+                      top: `${20 + Math.floor(i / 3) * 25}%`,
+                      width: '120px',
+                      height: '120px',
+                      background: `conic-gradient(from ${i * 45}deg, transparent, rgba(218, 165, 32, 0.3), transparent)`,
+                      borderRadius: '50%'
+                    }}
+                    animate={{
+                      rotate: [0, 360]
+                    }}
+                    transition={{
+                      duration: 20 + i * 2,
+                      repeat: Infinity,
+                      ease: "linear"
+                    }}
+                  />
+                ))}
+              </div>
+              
+              {/* Crochet Dress Images with Parallax */}
               <motion.div
-                className="absolute top-20 left-20 w-32 h-32 bg-gradient-to-br from-cyan-400 to-blue-600 rounded-3xl"
+                className="absolute top-20 left-20 w-80 h-96 overflow-hidden rounded-2xl shadow-2xl"
                 style={{
                   x: mousePosition.x * 30,
                   y: mousePosition.y * 20,
                   rotate: scrollY * 0.1
                 }}
-                animate={{
-                  rotate: [0, 360]
-                }}
-                transition={{
-                  duration: 20,
-                  repeat: Infinity,
-                  ease: "linear"
-                }}
-              />
+              >
+                <div className="w-full h-full bg-gradient-to-br from-amber-800 to-amber-600 flex items-center justify-center">
+                  <div className="text-center text-white">
+                    <div className="text-4xl font-bold mb-2">HERITAGE</div>
+                    <div className="text-sm opacity-80">Crochet Artistry</div>
+                  </div>
+                </div>
+              </motion.div>
               
               <motion.div
-                className="absolute bottom-32 right-32 w-48 h-48 bg-gradient-to-br from-pink-500 to-violet-600 rounded-full"
+                className="absolute bottom-32 right-32 w-64 h-80 overflow-hidden rounded-2xl shadow-2xl"
                 style={{
                   x: mousePosition.x * -40,
                   y: mousePosition.y * -30,
                   rotate: scrollY * -0.05
                 }}
-                animate={{
-                  scale: [1, 1.1, 1]
-                }}
-                transition={{
-                  duration: 4,
-                  repeat: Infinity,
-                  ease: "easeInOut"
-                }}
-              />
+              >
+                <div className="w-full h-full bg-gradient-to-br from-yellow-700 to-orange-700 flex items-center justify-center">
+                  <div className="text-center text-white">
+                    <div className="text-4xl font-bold mb-2">CULTURE</div>
+                    <div className="text-sm opacity-80">Traditional Craft</div>
+                  </div>
+                </div>
+              </motion.div>
               
               <motion.div
                 className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96"
@@ -127,38 +163,39 @@ function HomePage() {
                   y: mousePosition.y * 15
                 }}
               >
-                {/* Central crochet pattern */}
+                {/* Central Surinamese Cultural Mandala */}
                 <motion.div
                   className="w-full h-full relative"
                   animate={{
                     rotate: 360
                   }}
                   transition={{
-                    duration: 30,
+                    duration: 40,
                     repeat: Infinity,
                     ease: "linear"
                   }}
                 >
-                  {/* Crochet pattern simulation */}
-                  {[...Array(8)].map((_, i) => (
+                  {/* Traditional Pattern Elements */}
+                  {[...Array(12)].map((_, i) => (
                     <motion.div
                       key={i}
-                      className="absolute w-16 h-16 bg-gradient-to-br from-emerald-400 to-teal-600 rounded-full"
+                      className="absolute w-8 h-8 border-2 border-amber-500"
                       style={{
                         top: '50%',
                         left: '50%',
                         transformOrigin: '0 0',
-                        rotate: i * 45,
-                        x: 100
+                        rotate: i * 30,
+                        x: 120 + (i % 2) * 20,
+                        borderRadius: i % 3 === 0 ? '50%' : '0%'
                       }}
                       animate={{
-                        scale: [0.5, 1, 0.5],
-                        opacity: [0.3, 0.8, 0.3]
+                        scale: [0.8, 1.2, 0.8],
+                        opacity: [0.4, 0.9, 0.4]
                       }}
                       transition={{
-                        duration: 3,
+                        duration: 4,
                         repeat: Infinity,
-                        delay: i * 0.2,
+                        delay: i * 0.15,
                         ease: "easeInOut"
                       }}
                     />
@@ -166,24 +203,27 @@ function HomePage() {
                 </motion.div>
               </motion.div>
               
-              {/* Particle system */}
+              {/* Cultural Floating Elements */}
               <div className="absolute inset-0">
-                {[...Array(20)].map((_, i) => (
+                {[...Array(15)].map((_, i) => (
                   <motion.div
                     key={i}
-                    className="absolute w-2 h-2 bg-white rounded-full"
+                    className="absolute w-3 h-3 border border-amber-400"
                     style={{
                       left: `${Math.random() * 100}%`,
-                      top: `${Math.random() * 100}%`
+                      top: `${Math.random() * 100}%`,
+                      borderRadius: i % 2 === 0 ? '50%' : '0%'
                     }}
                     animate={{
-                      y: [0, -100, 0],
-                      opacity: [0, 1, 0]
+                      y: [0, -120, 0],
+                      x: [0, Math.sin(i) * 30, 0],
+                      opacity: [0, 0.8, 0],
+                      rotate: [0, 180, 360]
                     }}
                     transition={{
-                      duration: 3 + Math.random() * 2,
+                      duration: 4 + Math.random() * 3,
                       repeat: Infinity,
-                      delay: Math.random() * 2,
+                      delay: Math.random() * 3,
                       ease: "easeInOut"
                     }}
                   />
@@ -192,92 +232,48 @@ function HomePage() {
             </div>
           </motion.div>
 
-          {/* Hero Content with Enhanced Styling */}
+          {/* Sophisticated Hero Content */}
           <motion.div 
-            className="relative z-10 text-center text-white px-4"
+            className="relative z-10 text-center text-white px-4 max-w-6xl mx-auto"
             style={{ y: textY }}
           >
-            {/* Glowing backdrop */}
-            <div className="absolute inset-0 bg-black/20 backdrop-blur-sm rounded-3xl" />
+            {/* Premium backdrop */}
+            <div className="absolute inset-0 bg-black/30 backdrop-blur-md rounded-3xl border border-amber-500/20" />
             
-            <div className="relative z-10">
+            <div className="relative z-10 py-16">
+              {/* Cultural Symbol */}
               <motion.div
-                initial={{ scale: 0.8, opacity: 0 }}
+                initial={{ scale: 0.5, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
-                transition={{ duration: 1.5, ease: "easeOut" }}
-                className="mb-6"
+                transition={{ duration: 2, ease: "easeOut" }}
+                className="mb-8"
               >
-                <SparklesIcon className="w-12 h-12 mx-auto text-yellow-400 animate-pulse" />
+                <div className="w-16 h-16 mx-auto border-2 border-amber-400 rounded-full flex items-center justify-center">
+                  <div className="w-8 h-8 bg-gradient-to-br from-amber-400 to-yellow-600 rounded-full" />
+                </div>
               </motion.div>
               
               <motion.h1
                 initial={{ y: 100, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
-                transition={{ duration: 1, delay: 0.3 }}
-                className="text-6xl md:text-8xl lg:text-9xl font-black mb-8 tracking-tight"
-                style={{
-                  background: 'linear-gradient(135deg, #ffffff 0%, #60a5fa 50%, #a855f7 100%)',
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
-                  backgroundClip: 'text'
-                }}
+                transition={{ duration: 1.2, delay: 0.3 }}
+                className="text-6xl md:text-8xl lg:text-9xl font-black mb-8 tracking-wide"
               >
                 <motion.span
+                  className="block"
+                  style={{
+                    background: 'linear-gradient(135deg, #FFF 0%, #DAA520 50%, #B8860B 100%)',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    backgroundClip: 'text',
+                    textShadow: '0 4px 20px rgba(218, 165, 32, 0.3)'
+                  }}
                   animate={{
-                    textShadow: [
-                      '0 0 20px rgba(96, 165, 250, 0.5)',
-                      '0 0 40px rgba(168, 85, 247, 0.8)',
-                      '0 0 20px rgba(96, 165, 250, 0.5)'
+                    filter: [
+                      'drop-shadow(0 0 20px rgba(218, 165, 32, 0.5))',
+                      'drop-shadow(0 0 40px rgba(218, 165, 32, 0.8))',
+                      'drop-shadow(0 0 20px rgba(218, 165, 32, 0.5))'
                     ]
-                  }}
-                  transition={{
-                    duration: 2,
-                    repeat: Infinity,
-                    ease: "easeInOut"
-                  }}
-                >
-                  SURINAME
-                </motion.span>
-                <br />
-                <motion.span
-                  className="relative"
-                  animate={{
-                    textShadow: [
-                      '0 0 30px rgba(168, 85, 247, 0.8)',
-                      '0 0 50px rgba(96, 165, 250, 0.6)',
-                      '0 0 30px rgba(168, 85, 247, 0.8)'
-                    ]
-                  }}
-                  transition={{
-                    duration: 2,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                    delay: 1
-                  }}
-                >
-                  PANGI
-                  {/* Decorative underline */}
-                  <motion.div
-                    className="absolute -bottom-4 left-1/2 transform -translate-x-1/2 h-2 bg-gradient-to-r from-blue-400 to-purple-600 rounded-full"
-                    initial={{ width: 0 }}
-                    animate={{ width: '100%' }}
-                    transition={{ duration: 1.5, delay: 1.2 }}
-                  />
-                </motion.span>
-              </motion.h1>
-              
-              <motion.p
-                initial={{ y: 50, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ duration: 1, delay: 0.6 }}
-                className="text-xl md:text-2xl mb-12 font-light max-w-2xl mx-auto leading-relaxed"
-                style={{
-                  textShadow: '0 2px 10px rgba(0, 0, 0, 0.5)'
-                }}
-              >
-                <motion.span
-                  animate={{
-                    opacity: [0.7, 1, 0.7]
                   }}
                   transition={{
                     duration: 3,
@@ -285,12 +281,22 @@ function HomePage() {
                     ease: "easeInOut"
                   }}
                 >
-                  Handcrafted elegance meets modern innovation.
+                  SURINAME
                 </motion.span>
-                <br />
                 <motion.span
+                  className="block relative"
+                  style={{
+                    background: 'linear-gradient(135deg, #DAA520 0%, #FFD700 50%, #FFF 100%)',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    backgroundClip: 'text'
+                  }}
                   animate={{
-                    opacity: [0.7, 1, 0.7]
+                    filter: [
+                      'drop-shadow(0 0 30px rgba(255, 215, 0, 0.6))',
+                      'drop-shadow(0 0 50px rgba(255, 215, 0, 0.9))',
+                      'drop-shadow(0 0 30px rgba(255, 215, 0, 0.6))'
+                    ]
                   }}
                   transition={{
                     duration: 3,
@@ -299,7 +305,38 @@ function HomePage() {
                     delay: 1.5
                   }}
                 >
-                  Discover the art of Surinamese crochet reimagined.
+                  PANGI
+                  {/* Cultural underline pattern */}
+                  <motion.div
+                    className="absolute -bottom-6 left-1/2 transform -translate-x-1/2 h-1"
+                    style={{
+                      background: 'repeating-linear-gradient(90deg, #DAA520 0, #DAA520 10px, #FFD700 10px, #FFD700 20px)',
+                      width: '100%'
+                    }}
+                    initial={{ scaleX: 0 }}
+                    animate={{ scaleX: 1 }}
+                    transition={{ duration: 2, delay: 1.8 }}
+                  />
+                </motion.span>
+              </motion.h1>
+              
+              <motion.p
+                initial={{ y: 50, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ duration: 1, delay: 0.8 }}
+                className="text-2xl md:text-3xl mb-12 font-light max-w-4xl mx-auto leading-relaxed text-amber-100"
+              >
+                <motion.span
+                  className="block mb-2"
+                  style={{ fontFamily: 'serif' }}
+                >
+                  Where Traditional Craft Meets Contemporary Design
+                </motion.span>
+                <motion.span
+                  className="text-lg text-amber-200/80"
+                  style={{ letterSpacing: '0.1em' }}
+                >
+                  Authentic Surinamese Crochet Heritage Reimagined for the Modern World
                 </motion.span>
               </motion.p>
 
@@ -331,7 +368,7 @@ function HomePage() {
                   </motion.button>
                 </div>
                 
-                {/* Enhanced feature badges */}
+                {/* Premium feature badges */}
                 <motion.div 
                   className="flex flex-wrap items-center justify-center gap-6 text-sm font-light"
                   initial={{ opacity: 0 }}
@@ -339,26 +376,26 @@ function HomePage() {
                   transition={{ delay: 1.2 }}
                 >
                   {[
-                    { icon: '🌍', text: 'Worldwide Shipping' },
-                    { icon: '✨', text: 'Handcrafted Quality' },
-                    { icon: '🎨', text: 'Limited Edition' },
-                    { icon: '♻️', text: 'Sustainable Materials' }
+                    { text: 'Worldwide Shipping' },
+                    { text: 'Handcrafted Quality' },
+                    { text: 'Limited Edition' },
+                    { text: 'Sustainable Materials' }
                   ].map((feature, i) => (
                     <motion.div
                       key={i}
-                      className="flex items-center space-x-2 bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full"
+                      className="flex items-center space-x-3 bg-black/30 backdrop-blur-sm px-6 py-3 rounded-full border border-amber-500/30"
                       animate={{
-                        y: [0, -5, 0]
+                        y: [0, -3, 0]
                       }}
                       transition={{
                         duration: 2,
                         repeat: Infinity,
-                        delay: i * 0.2,
+                        delay: i * 0.3,
                         ease: "easeInOut"
                       }}
                     >
-                      <span className="text-lg">{feature.icon}</span>
-                      <span>{feature.text}</span>
+                      <div className="w-2 h-2 bg-amber-400 rounded-full"></div>
+                      <span className="text-amber-100">{feature.text}</span>
                     </motion.div>
                   ))}
                 </motion.div>
@@ -422,16 +459,16 @@ function HomePage() {
           </motion.div>
         </motion.section>
 
-        {/* Enhanced Product Section with 3D Parallax */}
-        <section className="min-h-screen relative overflow-hidden">
-          {/* Gradient background with moving elements */}
+        {/* Premium Product Section with Cultural Elements */}
+        <section className="min-h-screen relative overflow-hidden bg-gray-900">
+          {/* Cultural background with moving elements */}
           <div className="absolute inset-0">
-            <div className="w-full h-full bg-gradient-to-br from-slate-50 via-blue-50 to-purple-50">
-              {/* Floating background shapes */}
-              {[...Array(15)].map((_, i) => (
+            <div className="w-full h-full bg-gradient-to-br from-gray-900 via-black to-amber-900">
+              {/* Cultural floating shapes */}
+              {[...Array(12)].map((_, i) => (
                 <motion.div
                   key={i}
-                  className="absolute bg-gradient-to-br from-blue-200/30 to-purple-300/30 rounded-full"
+                  className="absolute bg-gradient-to-br from-amber-800/20 to-yellow-700/20 rounded-full"
                   style={{
                     width: Math.random() * 200 + 50,
                     height: Math.random() * 200 + 50,
@@ -479,24 +516,24 @@ function HomePage() {
                     transformStyle: "preserve-3d"
                   }}
                 >
-                  {/* Main product card */}
-                  <div className="aspect-square bg-white rounded-3xl overflow-hidden relative group shadow-2xl">
-                    {/* Shimmer effect */}
-                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
+                  {/* Premium product showcase */}
+                  <div className="aspect-square bg-gray-900 rounded-3xl overflow-hidden relative group shadow-2xl border border-amber-500/20">
+                    {/* Golden shimmer effect */}
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-amber-400/30 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-1500" />
                     
-                    {/* Product showcase */}
+                    {/* Cultural product showcase */}
                     <motion.div
                       className="w-full h-full relative overflow-hidden"
                       style={{
-                        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
+                        background: 'linear-gradient(135deg, #1F2937 0%, #374151 50%, #92400e 100%)'
                       }}
                     >
-                      {/* Crochet pattern overlay */}
-                      <div className="absolute inset-0 opacity-20">
+                      {/* Traditional crochet pattern overlay */}
+                      <div className="absolute inset-0 opacity-30">
                         {[...Array(12)].map((_, i) => (
                           <motion.div
                             key={i}
-                            className="absolute w-16 h-16 border-2 border-white rounded-full"
+                            className="absolute w-16 h-16 border-2 border-amber-400 rounded-full"
                             style={{
                               left: `${(i % 4) * 25}%`,
                               top: `${Math.floor(i / 4) * 33}%`
@@ -529,16 +566,16 @@ function HomePage() {
                           }}
                         >
                           <motion.span 
-                            className="text-white text-6xl font-black"
+                            className="text-amber-200 text-6xl font-black"
                             style={{
-                              textShadow: '0 4px 20px rgba(0,0,0,0.3)',
-                              filter: 'drop-shadow(0 0 10px rgba(255,255,255,0.3))'
+                              textShadow: '0 4px 20px rgba(218, 165, 32, 0.5)',
+                              filter: 'drop-shadow(0 0 15px rgba(255, 215, 0, 0.4))'
                             }}
                           >
                             SP
                           </motion.span>
                           <motion.div
-                            className="text-white text-sm font-light tracking-wider mt-2"
+                            className="text-amber-300 text-sm font-light tracking-wider mt-2"
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             transition={{ delay: 0.5 }}
@@ -581,9 +618,9 @@ function HomePage() {
                     whileInView={{ y: 0, opacity: 1 }}
                     viewport={{ once: true }}
                     transition={{ delay: 0.4 }}
-                    className="text-5xl md:text-6xl font-bold text-black mb-6"
+                    className="text-5xl md:text-6xl font-bold text-amber-100 mb-6"
                   >
-                    SIGNATURE
+                    HERITAGE
                     <br />
                     COLLECTION
                   </motion.h2>
@@ -592,11 +629,11 @@ function HomePage() {
                     whileInView={{ y: 0, opacity: 1 }}
                     viewport={{ once: true }}
                     transition={{ delay: 0.5 }}
-                    className="text-xl text-gray-600 leading-relaxed mb-8"
+                    className="text-xl text-amber-200/80 leading-relaxed mb-8"
                   >
-                    Discover our exclusive range of premium fashion pieces. 
-                    Each item is crafted with precision and attention to detail, 
-                    representing the pinnacle of modern style and comfort.
+                    Experience authentic Surinamese craftsmanship through our curated collection. 
+                    Each piece embodies centuries-old crochet traditions, reimagined for contemporary elegance 
+                    and celebrating the rich cultural heritage of Suriname.
                   </motion.p>
                 </div>
 
@@ -608,16 +645,16 @@ function HomePage() {
                   className="space-y-4"
                 >
                   <div className="flex items-center space-x-4">
-                    <div className="w-2 h-2 bg-black rounded-full"></div>
-                    <span className="text-lg">Premium Materials</span>
+                    <div className="w-3 h-3 bg-amber-400 rounded-full border border-amber-600"></div>
+                    <span className="text-lg text-amber-100">Authentic Craftsmanship</span>
                   </div>
                   <div className="flex items-center space-x-4">
-                    <div className="w-2 h-2 bg-black rounded-full"></div>
-                    <span className="text-lg">Sustainable Production</span>
+                    <div className="w-3 h-3 bg-amber-400 rounded-full border border-amber-600"></div>
+                    <span className="text-lg text-amber-100">Cultural Heritage</span>
                   </div>
                   <div className="flex items-center space-x-4">
-                    <div className="w-2 h-2 bg-black rounded-full"></div>
-                    <span className="text-lg">Limited Edition</span>
+                    <div className="w-3 h-3 bg-amber-400 rounded-full border border-amber-600"></div>
+                    <span className="text-lg text-amber-100">Limited Artisan Pieces</span>
                   </div>
                 </motion.div>
 
@@ -627,8 +664,8 @@ function HomePage() {
                   viewport={{ once: true }}
                   transition={{ delay: 0.7 }}
                 >
-                  <Link href="/collection" className="inline-block bg-black text-white px-8 py-4 rounded-full font-semibold hover:bg-gray-800 transition-all transform hover:scale-105">
-                    EXPLORE NOW
+                  <Link href="/products" className="inline-block bg-gradient-to-r from-amber-600 to-yellow-600 text-black px-8 py-4 rounded-full font-semibold hover:from-amber-500 hover:to-yellow-500 transition-all transform hover:scale-105 shadow-lg">
+                    DISCOVER HERITAGE
                   </Link>
                 </motion.div>
               </motion.div>

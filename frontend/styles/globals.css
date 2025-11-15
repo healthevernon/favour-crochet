@@ -1,0 +1,92 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&family=Ubuntu:wght@300;400;500;700&display=swap');
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  body {
+    @apply font-body text-gray-900 bg-white;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-primary-600 hover:bg-primary-700 text-white font-medium py-3 px-6 rounded-lg transition-colors duration-200 shadow-lg hover:shadow-xl;
+  }
+  
+  .btn-secondary {
+    @apply bg-white hover:bg-gray-50 text-primary-600 border-2 border-primary-600 font-medium py-3 px-6 rounded-lg transition-all duration-200 shadow-md hover:shadow-lg;
+  }
+  
+  .card {
+    @apply bg-white rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden;
+  }
+  
+  .african-border {
+    background: linear-gradient(45deg, #FFD700, #FF8C00, #DC143C, #228B22);
+    background-size: 400% 400%;
+    animation: gradient 15s ease infinite;
+  }
+  
+  .kente-accent {
+    background: repeating-linear-gradient(
+      45deg,
+      #FFD700,
+      #FFD700 10px,
+      #DC143C 10px,
+      #DC143C 20px,
+      #228B22 20px,
+      #228B22 30px,
+      #0000CD 30px,
+      #0000CD 40px
+    );
+  }
+  
+  .hero-text {
+    @apply text-4xl md:text-6xl lg:text-7xl font-bold font-display text-white leading-tight;
+  }
+  
+  .section-title {
+    @apply text-3xl md:text-4xl lg:text-5xl font-bold font-display text-gray-900 mb-6;
+  }
+  
+  .product-card {
+    @apply card hover:scale-105 transform transition-all duration-300 cursor-pointer;
+  }
+  
+  .price-tag {
+    @apply text-2xl font-bold text-primary-600 font-display;
+  }
+}
+
+@layer utilities {
+  .text-shadow {
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  }
+  
+  .text-shadow-lg {
+    text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.4);
+  }
+  
+  .bg-pattern {
+    background-image: 
+      radial-gradient(circle at 25% 25%, #FFD700 2px, transparent 2px),
+      radial-gradient(circle at 75% 75%, #FF8C00 2px, transparent 2px);
+    background-size: 50px 50px;
+  }
+}
+
+@keyframes gradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
